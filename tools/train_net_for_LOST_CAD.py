@@ -151,6 +151,35 @@ def register_CAD_coco20k_train_gt_dataset(
     detectron2.data.MetadataCatalog.get(coco_dataset_name).thing_classes = ["object",]
     detectron2.data.MetadataCatalog.get(coco_dataset_name).evaluator_type = "coco"
 
+def register_CAD_dota_train_gt_dataset(
+    coco_json_path="./datasets/dota_train_CAD_gt.json",
+    coco_dataset_name="dota_train_CAD_gt"):
+
+    print(f"Registering the '{coco_dataset_name}' from the json file {coco_json_path}")
+    def coco_train_dataset_function():
+        with open(coco_json_path) as infile:
+            json_data = json.load(infile)
+        return json_data["dataset"]
+    detectron2.data.DatasetCatalog.register(
+        coco_dataset_name, coco_train_dataset_function)
+    detectron2.data.MetadataCatalog.get(coco_dataset_name).thing_classes = ["object",]
+    detectron2.data.MetadataCatalog.get(coco_dataset_name).evaluator_type = "coco"
+
+def register_CAD_dota_test_gt_dataset(
+    coco_json_path="./datasets/dota_test_CAD_gt.json",
+    coco_dataset_name="dota_test_CAD_gt"):
+
+    print(f"Registering the '{coco_dataset_name}' from the json file {coco_json_path}")
+    def coco_train_dataset_function():
+        with open(coco_json_path) as infile:
+            json_data = json.load(infile)
+        return json_data["dataset"]
+    detectron2.data.DatasetCatalog.register(
+        coco_dataset_name, coco_train_dataset_function)
+    detectron2.data.MetadataCatalog.get(coco_dataset_name).thing_classes = ["object",]
+    detectron2.data.MetadataCatalog.get(coco_dataset_name).evaluator_type = "coco"
+
+
 def register_CAD_LOST_pseudo_boxes_for_the_coco20k_trainval_dataset(
     coco20k_json_path="./datasets/coco20k_train_LOST_CAD.json",
     coco20k_dataset_name="coco20k_train_LOST_CAD"):
@@ -165,6 +194,19 @@ def register_CAD_LOST_pseudo_boxes_for_the_coco20k_trainval_dataset(
     detectron2.data.MetadataCatalog.get(coco20k_dataset_name).thing_classes = ["object",]
     detectron2.data.MetadataCatalog.get(coco20k_dataset_name).evaluator_type = "coco"
 
+def register_CAD_LOST_pseudo_boxes_for_the_dota_train_dataset(
+    dota_json_path="./datasets/dota_train_LOST_CAD.json",
+    dota_dataset_name="dota_train_LOST_CAD"):
+
+    print(f"Registering the '{dota_dataset_name}' from the json file {dota_json_path}")
+    def coco20k_train_dataset_function():
+        with open(dota_json_path) as infile:
+            json_data = json.load(infile)
+        return json_data["dataset"]
+    detectron2.data.DatasetCatalog.register(
+        dota_dataset_name, coco20k_train_dataset_function)
+    detectron2.data.MetadataCatalog.get(dota_dataset_name).thing_classes = ["object", ]
+    detectron2.data.MetadataCatalog.get(dota_dataset_name).evaluator_type = "coco"
 
 #*******************************************************************************
 #*******************************************************************************
@@ -175,10 +217,16 @@ register_CAD_LOST_pseudo_boxes_for_the_voc2007_trainval_dataset()
 
 # Register COCO dataset
 register_CAD_coco20k_train_gt_dataset()
+register_CAD_dota_test_gt_dataset(
+    coco_json_path="./datasets/dota_ss_test_CAD_gt.json",
+    coco_dataset_name="dota_ss_test_CAD_gt")
 register_CAD_objects_coco_train_dataset(image_root='../datasets/COCO/images')
 register_CAD_objects_coco_val_dataset(image_root='../datasets/COCO/images')
 try:
     register_CAD_LOST_pseudo_boxes_for_the_coco20k_trainval_dataset()
+    register_CAD_LOST_pseudo_boxes_for_the_dota_train_dataset(
+        dota_json_path="./datasets/dota_ss_train_LOST_CAD.json",
+        dota_dataset_name="dota_ss_train_LOST_CAD")
 except:
     print("If failing here, please make sure to construct pseudo-boxes dataset using:\
           >python tools/prepare_coco_LOST_CAD_pseudo_boxes_in_detectron2_format.py --pboxes /path/preds.pkl")

@@ -1,2 +1,6 @@
 outputs/*
 *.pyc
+datasets/
+results/
+.idea/
+examples/

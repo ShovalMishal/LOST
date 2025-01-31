@@ -54,7 +54,7 @@ if __name__ == "__main__":
         "--dataset",
         default="VOC07",
         type=str,
-        choices=[None, "VOC07", "VOC12", "COCO20k"],
+        choices=[None, "VOC07", "VOC12", "COCO20k", "DOTA", "DOTA04", "DOTA055", "DOTA08", "DOTA10", "DOTA_MS_NORMALIZED", "DOTA_SS"],
         help="Dataset name.",
     )
     parser.add_argument(

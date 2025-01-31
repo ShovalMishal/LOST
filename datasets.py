@@ -76,6 +76,27 @@ class Dataset:
             self.annfile = "datasets/instances_train2014_sel20k.json"
             if not os.path.exists(self.annfile):
                 select_coco_20k(self.sel20k, self.all_annfile)
+        elif dataset_name == "DOTA":
+            self.root_path = f"/home/shoval/Documents/Repositories/data/gsd_02_normalized_dataset_rotated/{dataset_set}/images"
+            self.annfile = f"/home/shoval/Documents/Repositories/data/gsd_02_normalized_dataset_rotated/{dataset_set}/annotations/instances.json"
+        elif dataset_name == "DOTA04":
+            self.root_path = f"/home/shoval/Documents/Repositories/data/gsd_04_normalized_dataset_rotated/{dataset_set}/images"
+            self.annfile = f"/home/shoval/Documents/Repositories/data/gsd_04_normalized_dataset_rotated/{dataset_set}/annotations/instances.json"
+        elif dataset_name == "DOTA08":
+            self.root_path = f"/home/shoval/Documents/Repositories/data/gsd_08_normalized_dataset_rotated/{dataset_set}/images"
+            self.annfile = f"/home/shoval/Documents/Repositories/data/gsd_08_normalized_dataset_rotated/{dataset_set}/annotations/instances.json"
+        elif dataset_name == "DOTA055":
+            self.root_path = f"/home/shoval/Documents/Repositories/data/gsd_055_normalized_dataset_rotated/{dataset_set}/images"
+            self.annfile = f"/home/shoval/Documents/Repositories/data/gsd_055_normalized_dataset_rotated/{dataset_set}/annotations/instances.json"
+        elif dataset_name == "DOTA10":
+            self.root_path = f"/home/shoval/Documents/Repositories/data/gsd_10_normalized_dataset_rotated/{dataset_set}/images"
+            self.annfile = f"/home/shoval/Documents/Repositories/data/gsd_10_normalized_dataset_rotated/{dataset_set}/annotations/instances.json"
+        elif dataset_name == "DOTA_SS":
+            self.root_path = f"/home/shoval/Documents/Repositories/data/DOTAV2_ss/{dataset_set}/images"
+            self.annfile = f"/home/shoval/Documents/Repositories/data/DOTAV2_ss/{dataset_set}/annotations/instances.json"
+        elif dataset_name == "DOTA_MS_NORMALIZED":
+            self.root_path = f"/home/shoval/Documents/Repositories/data/multiscale_normalized_dataset_rotated/{dataset_set}/images"
+            self.annfile = f"/home/shoval/Documents/Repositories/data/multiscale_normalized_dataset_rotated/{dataset_set}/annotations/instances.json"
         else:
             raise ValueError("Unknown dataset.")
 
@@ -93,7 +114,7 @@ class Dataset:
                 transform=transform,
                 download=False,
             )
-        elif "COCO20k" == dataset_name:
+        elif "COCO20k" == dataset_name or "DOTA" in dataset_name:
             self.dataloader = torchvision.datasets.CocoDetection(
                 self.root_path, annFile=self.annfile, transform=transform
             )
@@ -127,7 +148,7 @@ class Dataset:
         """
         if "VOC" in self.dataset_name:
             im_name = inp["annotation"]["filename"]
-        elif "COCO" in self.dataset_name:
+        elif "COCO" or "DOTA" in self.dataset_name:
             im_name = str(inp[0]["image_id"])
 
         return im_name
@@ -135,7 +156,7 @@ class Dataset:
     def extract_gt(self, targets, im_name):
         if "VOC" in self.dataset_name:
             return extract_gt_VOC(targets, remove_hards=self.remove_hards)
-        elif "COCO" in self.dataset_name:
+        elif "COCO" or "DOTA" in self.dataset_name:
             return extract_gt_COCO(targets, remove_iscrowd=True)
         else:
             raise ValueError("Unknown dataset")
@@ -364,3 +385,27 @@ def select_coco_20k(sel_file, all_annotations_file):
         json.dump(train2014_20k, outfile)
 
     print('Done.')
+
+class DOTAv2Dataset():
+    """DOTA-v2.0 dataset for detection.
+
+    Note: ``ann_file`` in DOTAv2Dataset is different from the BaseDataset.
+    In BaseDataset, it is the path of an annotation file. In DOTAv2Dataset,
+    it is the path of a folder containing XML files.
+    """
+
+    METAINFO = {
+        'classes':
+        ('plane', 'baseball-diamond', 'bridge', 'ground-track-field',
+         'small-vehicle', 'large-vehicle', 'ship', 'tennis-court',
+         'basketball-court', 'storage-tank', 'soccer-ball-field', 'roundabout',
+         'harbor', 'swimming-pool', 'helicopter', 'container-crane', 'airport',
+         'helipad'),
+        # palette is a list of color tuples, which is used for visualization.
+        'palette': [(165, 42, 42), (189, 183, 107), (0, 255, 0), (255, 0, 0),
+                    (138, 43, 226), (255, 128, 0), (255, 0, 255),
+                    (0, 255, 255), (255, 193, 193), (0, 51, 153),
+                    (255, 250, 205), (0, 139, 139), (255, 255, 0),
+                    (147, 116, 116), (0, 0, 255), (220, 20, 60), (119, 11, 32),
+                    (0, 0, 142)]
+    }

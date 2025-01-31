@@ -76,7 +76,7 @@ def visualize_fms(A, seed, scores, dims, scales, output_folder, im_name):
             mode="nearest",
         )[0].cpu().numpy()
     )
-
+    im_corr = (im_corr * 255).astype(np.uint8)
     # Save correlations
     skimage.io.imsave(
         fname=f"{output_folder}/corr_{im_name}.png",

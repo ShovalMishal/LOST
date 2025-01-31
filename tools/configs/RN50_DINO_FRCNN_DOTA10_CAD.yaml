@@ -25,8 +25,8 @@ INPUT:
   MIN_SIZE_TEST: 800
   FORMAT: "RGB"
 DATASETS:
-  TRAIN: ('coco20k_train_LOST_CAD', )
-  TEST: ('coco20k_train_CAD_gt', )
+  TRAIN: ('dota10_train_LOST_CAD', )
+  TEST: ('dota10_test_CAD_gt', )
 TEST:
   EVAL_PERIOD: 5000
   PRECISE_BN:
@@ -37,4 +37,4 @@ SOLVER:
   WARMUP_ITERS: 100 # Maybe needs tuning.
   IMS_PER_BATCH: 4
   BASE_LR: 0.02 # Maybe it will need some tuning. MoCo used 0.02.
-OUTPUT_DIR: "./outputs/RN50_DINO_FRCNN_COCO20k_CAD"
+OUTPUT_DIR: "./outputs/RN50_DINO_FRCNN_DOTA10_CAD"

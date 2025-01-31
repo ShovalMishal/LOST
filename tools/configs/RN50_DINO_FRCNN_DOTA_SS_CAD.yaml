@@ -12,12 +12,13 @@ MODEL:
   ROI_HEADS:
     NAME: "Res5ROIHeadsExtraNorm"
     NUM_CLASSES: 1
-    SCORE_THRESH_TEST: 0.01
-    NMS_THRESH_TEST: 0.4
+    SCORE_THRESH_TEST: 0.0
+    NMS_THRESH_TEST: 0.7
   BACKBONE:
     FREEZE_AT: 2
   ROI_BOX_HEAD:
     NORM: "SyncBN" # RGB Mean and Std
+
   PIXEL_MEAN: [123.675, 116.280, 103.530]
   PIXEL_STD: [58.395, 57.120, 57.375]
 INPUT:
@@ -25,16 +26,18 @@ INPUT:
   MIN_SIZE_TEST: 800
   FORMAT: "RGB"
 DATASETS:
-  TRAIN: ('coco20k_train_LOST_CAD', )
-  TEST: ('coco20k_train_CAD_gt', )
+  TRAIN: ('dota_ss_train_LOST_CAD', )
+  TEST: ('dota_ss_test_CAD_gt', )
 TEST:
   EVAL_PERIOD: 5000
   PRECISE_BN:
-    ENABLED: True
+    ENABLED: True 
+  DETECTIONS_PER_IMAGE: 100
 SOLVER:
   STEPS: (18000, 22000)
   MAX_ITER: 24000
   WARMUP_ITERS: 100 # Maybe needs tuning.
   IMS_PER_BATCH: 4
   BASE_LR: 0.02 # Maybe it will need some tuning. MoCo used 0.02.
-OUTPUT_DIR: "./outputs/RN50_DINO_FRCNN_COCO20k_CAD"
+  
+OUTPUT_DIR: "./outputs/RN50_DINO_FRCNN_DOTA_SS_100_CAD"
